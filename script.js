@@ -88,7 +88,67 @@ Number.isNaN('my sons age') //false
 // hint. Meaning it first attempts to call valueOf on the value, then toString if that doesnt result in a primitve. By default though 
 // if valueOf is called on an array or object it automatically returns this of that array or object. Meaning it did not coerce to 
 // a primitive, resulting in toString to always need to be called instead. The stringified object is then passed back into ToNumber 
-// and that is what ends up being coerced to a number. 
+// and that is what ends up being coerced to a number. ToNumber coerces strings to numbers in the way youd expect for the most part.
+// There are a few weird things though, empty string instead of being NaN is actually 0. Another weird thing is while undefined 
+// becomes NaN like youd think null becomes 0 
+
+
+// ToBoolean, any time youre using a non boolean value in a situation that needs a boolean, this operation occurs. It checks 
+// whether the non boolean value is falsey or truthy and coerces accordingly. The only falsy values are "", 0, null, undefined, 
+// false, and NaN.
+
+
+
+// There is implicit and explicit coercion, an example of implicit is using template literals. An example of explicit is turning
+// an array into a string using join("")
+
+
+// The plus operator added to the left side of a string invokes the ToNumber abstract operation. it is a way to force a value to 
+// be a number
+let unaryPlus = +"6"
+
+// When there is a value on each side of the plus operator it defaults to the ToNumber operation
+let concat = 6 + 6
+
+// If one side is a string though the preference becomes ToString
+let concat2 = 6 + '6'
+
+// If one side is a non primitive and the other a number ToPrimitve coerces the non primitive side using the number hint.
+// Because valueOf on objects/arrays always evaluates to itself. The array is coerced into an empty string. Because one side 
+// is now a string ToString operation is run coercing the 6 into "6". "6" + "" = "6"
+let concat3 = 6 + []
+
+//if a string is not involved in an operation, the unary plus defaults to ToNumber, coercing true to 1.
+let concat4 = 6 + true
+
+// If the unary plus is on the right side of a single string it invokes ToString abstraction, if on the left it invokes ToNumber.
+let concat5 =  "6" +
+
+console.log( unaryPlus, typeof unaryPlus)
+console.log( concat, typeof concat)
+console.log( concat2, typeof concat2)
+console.log( concat3, typeof concat3)
+console.log( concat4, typeof concat4)
+console.log( concat5, typeof concat5)
+
+
+// There are three ways to force a string to be a number.
+
+// unary plus on left side
+let unaryLeft =  +"8" 
+// use the built in Number function
+let numberFunction =  Number("8") 
+// Using the minus operator only every invokes ToNumber
+let minus =  "8" - 8
+// Using the minus operator on the left side invokes ToNumber and turns that number negative
+let minusLeft =  -"8" 
+
+console.log( unaryLeft, typeof unaryLeft)
+console.log( numberFunction, typeof numberFunction)
+console.log( minus, typeof minus)
+console.log( minusLeft, typeof minusLeft)
+
+
 
 
 
