@@ -202,7 +202,18 @@ console.log( minusLeft, typeof minusLeft)
 // Corner cases where you should avoid ==:
 // 1. With values that are or would be coerced to 0, "", or " "
 // 2. With non primitives.
-// 3. With value == true or value == false, use the implicit ToBoolean instead, or ===
+// 3. With value == true or value == false, use the implicit ToBoolean instead, or === if it has to be exactly true or false.
+
+// you should always prefer == in all scenarios, except in the above corner cases. 
+
+// Never use == when you dont know the types, with that being said you should write your code so you know the types as much as 
+// possible. If you run into a rare occurence where the types are uncertain you should make a comment about it to make it obvious 
+// You should always use comments to make the intent of your code obvious if it isnt. 
+
+// In the case you dont know the types that is one of the only circumstances you should use === so it signals to the reader, I dont 
+// know the types. === should always be used in a way that its a semantic signal to readers of the code that you dont know the types.
+
+
 
 
 
