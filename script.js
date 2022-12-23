@@ -73,7 +73,8 @@ Number.isNaN('my sons age') //false
 // ToPrimitive is auto run by JS whenever you attempt to utilize a non primitive type within an operation requiring a primitive 
 // So the hint passed to toPrimitive is determined by what kind of primitive is required in that operation.  
 // generally non primitive values have two methods. valueOf and toString. The one run first is determined by the ToPrimitive 
-// hint. If both are run and neither return a primitive an error is thrown
+// hint. If both are run and neither return a primitive an error is thrown. If an array is passed to ToPrimitive it is always 
+// stringified. When arrays are stringified they lose their brackets.
 
 
 // The next abstract operation is ToString, it coerces a value into a string and returns it. If a non primitive value is passed to 
@@ -190,6 +191,18 @@ console.log( minusLeft, typeof minusLeft)
 // they are null and undefined, if so it returns true. If not it runs through the various other steps to determine the two types
 // once this has been determined it coerces them to the same type using the ToNumber algorithm if theyre primitives, or ToPrimitve
 // if one is an object, and then recursively runs IsLooselyEqual again passing the coerced values as its new input.
+
+// Summary: 
+// If the types are the same the IsStrictEqual algorithm is used for both == and ===
+// If x is null y undefined or vice versa return true. 
+// If one type is a non primitive coerce that value using ToPrimitve and recursively call IsLooselyEqual again.
+// If a value is a string or boolean coerce that value to a number and recursively call IsLooselyEqual again.
+
+
+// Corner cases where you should avoid ==:
+// 1. With values that are or would be coerced to 0, "", or " "
+// 2. With non primitives.
+// 3. With value == true or value == false, use the implicit ToBoolean instead, or ===
 
 
 
