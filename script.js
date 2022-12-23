@@ -90,7 +90,7 @@ Number.isNaN('my sons age') //false
 // a primitive, resulting in toString to always need to be called instead. The stringified object is then passed back into ToNumber 
 // and that is what ends up being coerced to a number. ToNumber coerces strings to numbers in the way youd expect for the most part.
 // There are a few weird things though, empty string instead of being NaN is actually 0. Another weird thing is while undefined 
-// becomes NaN like youd think null becomes 0 
+// becomes NaN like youd think null becomes 0. ToNumber also gets rid of any trailing white space before its coercion.
 
 
 // ToBoolean, any time youre using a non boolean value in a situation that needs a boolean, this operation occurs. It checks 
@@ -147,6 +147,52 @@ console.log( unaryLeft, typeof unaryLeft)
 console.log( numberFunction, typeof numberFunction)
 console.log( minus, typeof minus)
 console.log( minusLeft, typeof minusLeft)
+
+
+
+// Its okay to use the implicit ToBoolean in your conditional statements, if the only two value options are undefined/null or an 
+// object. Otherwise, you should be more explicit with your ToBoolean invocations. 
+
+
+// At times you may access properties/methods on primitive values. When doing this the primitive is implicitly coerced into an 
+// object using a process called boxing. This is where the idea that everything in js is an object, but thats not true. 
+
+
+// A quality JS program embraces coercion, making sure types are clear, this ensures safety from edge cases. 
+
+// You should determine whether explicit or implicit coercion is necessary on a case by case basis. Basically just based on 
+// whichever would make things the most understandable/readable, and for protecting against edge cases. 
+
+
+
+// EQUALITY COERCION
+
+// The consensus on the difference between == and === is that == checks for equality of value, whereas === checks for equality of
+// value and equality of type. This statement is fundamentally incorrect. == and === are exactly the same when the types match, and
+// both operators check for type, where they differ is whether the allow coercion or not. == coerces operands to the same type 
+// with a preference toward number type before comparing values, whereas === does no coercion, if types differ it just returns false 
+
+// You should generally use == and just make sure that you know what your types are throughout your program. 
+// Coercively null and undefined are equal to eachother, so in a condition  instead of checking for both with a === seperately
+// Check for both with one ==. 
+
+// The semantics of === (AKA the strict equality operator) are defined by the IsStrictEqual abstract operation. Its an algorithm
+// takes the two operands on either side of it in as inputs, and returns true or false based on a set steps of control flow the algorithm
+// puts the inputs through. The first step is checking if the types of the two inputs are different, if they are false is returned.
+// If they are the same than it checks if they are number, if they are  it passes them to the Number::equal operation that determines
+// if they are equal, if theyre not numbers it passes them to the SameValueNonNumbers operation. 
+
+
+// The semantics of == (AKA abstract equality operator) are defined by the IsLooselyEqual abstract operation. This algorithm takes 
+// in two inputs (the operands on each side of the operator), and returns true or false based on different steps of control flow 
+// it passes its inputs through. The first step is to check if the values are of the same type, and if they are the same algorithm 
+// that defines the semantics of === is used to check the equality of their values. If they are not of the same type it checks if
+// they are null and undefined, if so it returns true. If not it runs through the various other steps to determine the two types
+// once this has been determined it coerces them to the same type using the ToNumber algorithm if theyre primitives, or ToPrimitve
+// if one is an object, and then recursively runs IsLooselyEqual again passing the coerced values as its new input.
+
+
+
 
 
 
